@@ -134,7 +134,7 @@ function App() {
       appId={process.env.REACT_APP_PRIVY_APP_ID || ""}
       config={{
         loginMethodsAndOrder: {
-          primary: ['cross_app:cmd8euall0037le0my79qpz42'],
+          primary: ['privy:cmd8euall0037le0my79qpz42'],
         },
         appearance: {
           theme: 'dark',
