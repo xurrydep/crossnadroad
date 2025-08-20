@@ -119,6 +119,18 @@ const Game = () => {
   };
 
   const loadGameScript = () => {
+    // Make wallet address and username available globally for Game.js
+    const walletAddress = getWalletAddress();
+    window.getWalletAddress = () => walletAddress;
+    window.getUsername = () => getUsername();
+    
+    // Make leaderboard refresh function available globally
+    window.refreshLeaderboard = () => {
+      if (showLeaderboard) {
+        fetchLeaderboard();
+      }
+    };
+    
     // Import the game logic from Game.js
     import('./Game.js').then(() => {
       // Initialize the game after script loads with a small delay to ensure DOM is ready

@@ -1423,13 +1423,20 @@ document.addEventListener('touchmove', handleTouchMove, false);
 // Submit score to Monad Games ID leaderboard API
 const submitScore = async (score) => {
     try {
-        // Get wallet address from React app
+        // Get wallet address and username from React app
         const walletAddress = window.getWalletAddress ? window.getWalletAddress() : null;
+        const username = window.getUsername ? window.getUsername() : null;
         
         if (!walletAddress) {
             console.log('No wallet address available for score submission');
             return;
         }
+
+        // Use username if available, otherwise use wallet address format
+        const playerName = username && username !== 'Player' ? username : 
+                          walletAddress.substring(0, 6) + '...' + walletAddress.substring(walletAddress.length - 4);
+
+        console.log('Submitting score:', { score, walletAddress, playerName });
 
         // Submit to Monad Games ID leaderboard API
         const response = await fetch('https://monad-games-id-site.vercel.app/api/submit-score', {
@@ -1441,15 +1448,24 @@ const submitScore = async (score) => {
                 gameId: 57,
                 walletAddress: walletAddress,
                 score: score,
-                playerName: walletAddress.substring(0, 6) + '...' + walletAddress.substring(walletAddress.length - 4)
+                playerName: playerName
             })
         });
 
         if (response.ok) {
             const result = await response.json();
             console.log('Score submitted to leaderboard successfully:', result);
+            
+            // Refresh leaderboard if it's open
+            if (window.refreshLeaderboard) {
+                setTimeout(() => {
+                    window.refreshLeaderboard();
+                }, 1000); // Wait 1 second for API to update
+            }
         } else {
             console.error('Failed to submit score to leaderboard:', response.status, response.statusText);
+            const errorText = await response.text();
+            console.error('Error response:', errorText);
         }
 
     } catch (error) {
