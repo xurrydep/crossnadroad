@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PrivyProvider, usePrivy, CrossAppAccountWithMetadata } from '@privy-io/react-auth';
-import Game from './Game';
+import Game from './Game.jsx';
 import './App.css';
 import './Game.css';
 
