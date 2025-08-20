@@ -11,7 +11,7 @@ function GameWithAuth() {
   const [hasUsername, setHasUsername] = useState(false);
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [gameStarted, setGameStarted] = useState(false);
+
 
   useEffect(() => {
     // Check if privy is ready and user is authenticated
@@ -129,27 +129,6 @@ function GameWithAuth() {
           >
             Sign Out
           </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (!gameStarted) {
-    return (
-      <div className="home-screen">
-        <div className="home-container">
-          <button 
-            className="play-button"
-            onClick={() => setGameStarted(true)}
-          >
-            PLAY
-          </button>
-          
-          <div className="user-info">
-            <span>Welcome, {username}!</span>
-            <span>Wallet: {accountAddress.slice(0, 6)}...{accountAddress.slice(-4)}</span>
-            <button className="logout-button" onClick={logout}>Sign Out</button>
-          </div>
         </div>
       </div>
     );

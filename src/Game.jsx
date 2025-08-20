@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { usePrivy } from '@privy-io/react-auth';
 import * as THREE from 'three';
 import './Game.css';
@@ -7,6 +7,8 @@ const Game = () => {
   const gameContainerRef = useRef(null);
   const gameInstanceRef = useRef(null);
   const { user, logout } = usePrivy();
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
   
   // Get user info
   const getUsername = () => {
@@ -29,6 +31,27 @@ const Game = () => {
       }
     }
     return null;
+  };
+  
+  // Fetch leaderboard data
+  const fetchLeaderboard = async () => {
+    try {
+      const response = await fetch('https://monad-games-id-site.vercel.app/api/leaderboard?gameId=57');
+      if (response.ok) {
+        const data = await response.json();
+        setLeaderboard(data.leaderboard || []);
+      }
+    } catch (error) {
+      console.error('Error fetching leaderboard:', error);
+    }
+  };
+  
+  // Toggle leaderboard visibility
+  const toggleLeaderboard = () => {
+    if (!showLeaderboard) {
+      fetchLeaderboard();
+    }
+    setShowLeaderboard(!showLeaderboard);
   };
 
   useEffect(() => {
@@ -121,15 +144,43 @@ const Game = () => {
       }}
     >
       {/* User Info Panel */}
-      <div className="user-info-panel">
-        <div className="user-details">
-          <span className="username">👤 {getUsername()}</span>
-          <span className="wallet">💳 {getWalletAddress() ? `${getWalletAddress().slice(0, 6)}...${getWalletAddress().slice(-4)}` : 'No wallet'}</span>
-        </div>
-        <button className="logout-btn" onClick={logout} title="Çıkış Yap">
-          🚪
-        </button>
-      </div>
+       <div className="user-info-panel">
+         <div className="user-details">
+           <span className="username">👤 {getUsername()}</span>
+           <span className="wallet">💳 {getWalletAddress() ? `${getWalletAddress().slice(0, 6)}...${getWalletAddress().slice(-4)}` : 'No wallet'}</span>
+         </div>
+         <button className="logout-btn" onClick={logout} title="Çıkış Yap">
+           🚪
+         </button>
+       </div>
+       
+       {/* Leaderboard Panel */}
+       <div className="leaderboard-panel">
+         <button className="leaderboard-toggle" onClick={toggleLeaderboard}>
+           🏆 Monad Games Leaderboard
+         </button>
+         {showLeaderboard && (
+           <div className="leaderboard-content">
+             <div className="leaderboard-header">
+               <h3>🏆 Top Players</h3>
+               <button className="close-btn" onClick={() => setShowLeaderboard(false)}>✕</button>
+             </div>
+             <div className="leaderboard-list">
+               {leaderboard.length > 0 ? (
+                 leaderboard.slice(0, 10).map((player, index) => (
+                   <div key={index} className={`leaderboard-item ${getWalletAddress() === player.walletAddress ? 'current-player' : ''}`}>
+                     <span className="rank">#{index + 1}</span>
+                     <span className="player-name">{player.playerName}</span>
+                     <span className="score">{player.score}</span>
+                   </div>
+                 ))
+               ) : (
+                 <div className="no-data">Henüz skor yok</div>
+               )}
+             </div>
+           </div>
+         )}
+       </div>
      </div>
    );
 };
