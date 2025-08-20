@@ -10,15 +10,88 @@ const Game = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   
+  // State for Monad Games ID username
+  const [monadUsername, setMonadUsername] = useState('Player');
+  const [isEditingUsername, setIsEditingUsername] = useState(false);
+  const [tempUsername, setTempUsername] = useState('');
+
   // Get user info
   const getUsername = () => {
-    if (user && user.linkedAccounts.length > 0) {
-      const crossAppAccount = user.linkedAccounts.filter(
-        account => account.type === "cross_app" && account.providerApp.id === "cmd8euall0037le0my79qpz42"
-      )[0];
-      return crossAppAccount ? crossAppAccount.username || 'Player' : 'Player';
+    return monadUsername;
+  };
+
+  // Check username from Monad Games ID API
+  const checkMonadUsername = async (walletAddress) => {
+    try {
+      const response = await fetch(`https://monad-games-id-site.vercel.app/api/check-wallet?wallet=${walletAddress}`);
+      const data = await response.json();
+      
+      if (data.hasUsername) {
+        setMonadUsername(data.user.username);
+        console.log('Monad username found:', data.user.username);
+      } else {
+        setMonadUsername('Player');
+        console.log('No Monad username found');
+      }
+    } catch (error) {
+      console.error('Error checking Monad username:', error);
+      setMonadUsername('Player');
     }
-    return 'Player';
+  };
+
+  // Save username to Monad Games ID
+  const saveUsername = async (newUsername) => {
+    const walletAddress = getWalletAddress();
+    if (!walletAddress) return false;
+
+    try {
+      const response = await fetch('https://monad-games-id-site.vercel.app/api/reserve-username', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          wallet: walletAddress,
+          username: newUsername
+        })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setMonadUsername(newUsername);
+        return true;
+      } else {
+        console.error('Failed to save username:', data.message);
+        return false;
+      }
+    } catch (error) {
+      console.error('Error saving username:', error);
+      return false;
+    }
+  };
+
+  // Handle username edit
+  const handleUsernameEdit = () => {
+    setTempUsername(monadUsername);
+    setIsEditingUsername(true);
+  };
+
+  const handleUsernameSave = async () => {
+    if (tempUsername.trim() && tempUsername !== monadUsername) {
+      const success = await saveUsername(tempUsername.trim());
+      if (success) {
+        setIsEditingUsername(false);
+      } else {
+        alert('Failed to save username. Please try again.');
+      }
+    } else {
+      setIsEditingUsername(false);
+    }
+  };
+
+  const handleUsernameCancel = () => {
+    setTempUsername('');
+    setIsEditingUsername(false);
   };
   
   const getWalletAddress = () => {
@@ -55,9 +128,16 @@ const Game = () => {
   };
 
   useEffect(() => {
-    // Initialize the game when component mounts
-    if (gameContainerRef.current && !gameInstanceRef.current) {
-      initializeGame();
+    if (user) {
+      console.log('Full user object:', JSON.stringify(user, null, 2));
+      const walletAddress = getWalletAddress();
+      if (walletAddress) {
+        checkMonadUsername(walletAddress);
+      }
+      // Initialize the game when component mounts
+      if (gameContainerRef.current && !gameInstanceRef.current) {
+        initializeGame();
+      }
     }
 
     // Cleanup when component unmounts
@@ -69,6 +149,24 @@ const Game = () => {
         }
         if (window.renderer) {
           window.renderer.dispose();
+        }
+        gameInstanceRef.current = null;
+      }
+    };
+  }, [user]);
+
+  // Initialize game when component mounts
+  useEffect(() => {
+    if (gameContainerRef.current && !gameInstanceRef.current) {
+      // Game will be initialized when user is available
+    }
+
+    return () => {
+      if (gameInstanceRef.current) {
+        // Cleanup if needed
+        const gameContainer = gameContainerRef.current;
+        if (gameContainer) {
+          gameContainer.innerHTML = '';
         }
         gameInstanceRef.current = null;
       }
@@ -158,7 +256,26 @@ const Game = () => {
       {/* User Info Panel */}
        <div className="user-info-panel">
          <div className="user-details">
-           <span className="username">👤 {getUsername()}</span>
+           <div className="username-section">
+             {isEditingUsername ? (
+               <div className="username-edit">
+                 <input 
+                   type="text" 
+                   value={tempUsername} 
+                   onChange={(e) => setTempUsername(e.target.value)}
+                   className="username-input"
+                   maxLength={20}
+                   placeholder="Enter username"
+                 />
+                 <button onClick={handleUsernameSave} className="save-btn">✓</button>
+                 <button onClick={handleUsernameCancel} className="cancel-btn">✗</button>
+               </div>
+             ) : (
+               <span className="username clickable" onClick={handleUsernameEdit}>
+                 👤 {getUsername()} ✏️
+               </span>
+             )}
+           </div>
            <span className="wallet">💳 {getWalletAddress() ? `${getWalletAddress().slice(0, 6)}...${getWalletAddress().slice(-4)}` : 'No wallet'}</span>
          </div>
          <button className="logout-btn" onClick={logout} title="Çıkış Yap">

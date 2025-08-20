@@ -1207,17 +1207,18 @@ const update = () =>{
                     const chickenRightEdge = chicken.model.position.x + cellWidth/2 * 0.2;
                     if(chickenRightEdge > carLeftEdge && chickenLeftEdge < carRightEdge && chicken.getLane() == lane.index){
                         if (!gameOver){
-                            chicken.squish();
-                            gameSounds.themeSong.setVolume(0);
-                            gameSounds.hit.play();
-                            gameOver = true;
-                            submitScore(chicken.maxLane);
-                            setTimeout(() => {
-                                const restartEl = document.getElementById("restart");
+            chicken.squish();
+            gameSounds.themeSong.setVolume(0);
+            gameSounds.hit.play();
+            gameOver = true;
+            console.log('Game over! Final score:', chicken.maxLane);
+            submitScore(chicken.maxLane);
+            setTimeout(() => {
+                const restartEl = document.getElementById("restart");
             if (restartEl) restartEl.style.visibility = "visible";
-                                // if (confirm("Game Over.\nRestart?"))
-                                //     init();
-                            }, 2000);
+                // if (confirm("Game Over.\nRestart?"))
+                //     init();
+            }, 2000);
                         }
                     }
                 });
@@ -1241,6 +1242,7 @@ const update = () =>{
                             gameSounds.themeSong.setVolume(0);
                             gameSounds.hit.play();
                             gameOver = true;
+                            console.log('Game over by truck! Final score:', chicken.maxLane);
                             submitScore(chicken.maxLane);
                             setTimeout(() => {
                                 const restartEl = document.getElementById("restart");
