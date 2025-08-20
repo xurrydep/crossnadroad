@@ -20,8 +20,9 @@ window.firstRun = () =>{
     // Find the game container
     gameContainer = document.querySelector('.game-wrapper');
     if (!gameContainer) {
-        console.error('Game container not found');
-        return;
+        // Fallback to body if game-wrapper is not found
+        gameContainer = document.body;
+        console.log('Using document.body as game container');
     }
 
     const instructionsEl = document.getElementById("instructions");
@@ -1210,6 +1211,7 @@ const update = () =>{
                             gameSounds.themeSong.setVolume(0);
                             gameSounds.hit.play();
                             gameOver = true;
+                            submitScore(chicken.maxLane);
                             setTimeout(() => {
                                 const restartEl = document.getElementById("restart");
             if (restartEl) restartEl.style.visibility = "visible";
@@ -1239,6 +1241,7 @@ const update = () =>{
                             gameSounds.themeSong.setVolume(0);
                             gameSounds.hit.play();
                             gameOver = true;
+                            submitScore(chicken.maxLane);
                             setTimeout(() => {
                                 const restartEl = document.getElementById("restart");
                                  if (restartEl) restartEl.style.visibility = "visible";
@@ -1280,6 +1283,7 @@ const update = () =>{
                     if (!gameOver){
                         chicken.fall();
                         gameOver = true;
+                        submitScore(chicken.maxLane);
                         setTimeout(() => {
                             const restartEl = document.getElementById("restart");
                             if (restartEl) restartEl.style.visibility = "visible";
@@ -1308,6 +1312,7 @@ const update = () =>{
                         gameSounds.shred.play();
                         gameSounds.death2.play();
                         gameOver = true;
+                        submitScore(chicken.maxLane);
                         setTimeout(() => {
                             const restartEl = document.getElementById("restart");
                             if (restartEl) restartEl.style.visibility = "visible";
@@ -1414,6 +1419,39 @@ const handleTouchMove = evt =>{
 };
 document.addEventListener('touchstart', handleTouchStart, false);
 document.addEventListener('touchmove', handleTouchMove, false);
+
+// Submit score to leaderboard
+const submitScore = async (score) => {
+    try {
+        // Get wallet address from React app
+        const walletAddress = window.getWalletAddress ? window.getWalletAddress() : null;
+        
+        if (!walletAddress) {
+            console.log('No wallet address available for score submission');
+            return;
+        }
+
+        const response = await fetch('https://monad-games-id-site.vercel.app/api/submit-score', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                gameId: 57,
+                wallet: walletAddress,
+                score: score
+            })
+        });
+
+        if (response.ok) {
+            console.log('Score submitted successfully:', score);
+        } else {
+            console.error('Failed to submit score:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error submitting score:', error);
+    }
+};
 
 // Export for React component
 export default { init: window.init, firstRun: window.firstRun };

@@ -27,6 +27,9 @@ function GameWithAuth() {
           const walletAddress = crossAppAccount.embeddedWallets[0].address;
           setAccountAddress(walletAddress);
           
+          // Make wallet address available globally for Game.js
+          window.getWalletAddress = () => walletAddress;
+          
           // Check username
           checkUsername(walletAddress);
         }
