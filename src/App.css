@@ -1,7 +1,8 @@
 /* Authentication Screens */
 .loading-screen,
 .auth-screen,
-.username-screen {
+.username-screen,
+.home-screen {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -131,4 +132,89 @@
   height: 100vh;
   position: relative;
   overflow: hidden;
+}
+
+/* Home Screen */
+.home-container {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 50px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 500px;
+  width: 90%;
+}
+
+.game-title {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 3em;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.game-subtitle {
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 1.5em;
+  font-weight: normal;
+}
+
+.game-instructions {
+  margin: 30px 0;
+  padding: 20px;
+  background: rgba(138, 43, 226, 0.1);
+  border-radius: 15px;
+  border-left: 4px solid #8a2be2;
+}
+
+.game-instructions p {
+  color: #555;
+  margin: 10px 0;
+  font-size: 1.1em;
+  line-height: 1.5;
+}
+
+.play-button {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: white;
+  border: none;
+  padding: 20px 40px;
+  border-radius: 30px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 20px 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.play-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(76, 175, 80, 0.4);
+}
+
+.home-container .user-info {
+  position: static;
+  background: rgba(0, 0, 0, 0.05);
+  color: #666;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: 'Arial', sans-serif;
+}
+
+.home-container .user-info span {
+  font-size: 14px;
+  color: #555;
+}
+
+.home-container .user-info .logout-button {
+  padding: 10px 20px;
+  font-size: 14px;
+  margin: 10px 0 0 0;
 }
