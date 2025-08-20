@@ -137,14 +137,14 @@ class Chicken{
             foot3 = new THREE.BoxGeometry(0.1, 0.1, 0.6),
             foot4 = new THREE.BoxGeometry(0.1, 0.5, 0.1),
             upperBeak = new THREE.BoxGeometry(0.2, 0.2, 0.3);
-        foot1.applyMatrix(new THREE.Matrix4().makeTranslation(0.1, foot1.parameters.height/2, 0.15));
-        foot2.applyMatrix(new THREE.Matrix4().makeTranslation(0, foot2.parameters.height/2, 0));
-        foot3.applyMatrix(new THREE.Matrix4().makeTranslation(-0.1, foot3.parameters.height/2, 0.15));
-        foot4.applyMatrix(new THREE.Matrix4().makeTranslation(0, foot4.parameters.height/2, 0));
-        upperBeak.applyMatrix(new THREE.Matrix4().makeTranslation(0, 1.5, upperBeak.parameters.depth/2 + 0.6));
+        foot1.applyMatrix4(new THREE.Matrix4().makeTranslation(0.1, foot1.parameters.height/2, 0.15));
+		foot2.applyMatrix4(new THREE.Matrix4().makeTranslation(0, foot2.parameters.height/2, 0));
+		foot3.applyMatrix4(new THREE.Matrix4().makeTranslation(-0.1, foot3.parameters.height/2, 0.15));
+		foot4.applyMatrix4(new THREE.Matrix4().makeTranslation(0, foot4.parameters.height/2, 0));
+		upperBeak.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 1.5, upperBeak.parameters.depth/2 + 0.6));
         let leftFoot = BufferGeometryUtils.mergeGeometries([foot1, foot2, foot3, foot4]), rightFoot = leftFoot.clone();
-        leftFoot.applyMatrix(new THREE.Matrix4().makeTranslation(0.2, 0, 0));
-        rightFoot.applyMatrix(new THREE.Matrix4().makeTranslation(-0.2, 0, 0));
+        leftFoot.applyMatrix4(new THREE.Matrix4().makeTranslation(0.2, 0, 0));
+		rightFoot.applyMatrix4(new THREE.Matrix4().makeTranslation(-0.2, 0, 0));
         let feet = new THREE.Mesh(BufferGeometryUtils.mergeGeometries([leftFoot, rightFoot, upperBeak]), orange);
         feet.castShadow = true;
         feet.receiveShadow = true;
@@ -155,18 +155,18 @@ class Chicken{
             leftWing = new THREE.BoxGeometry(0.15, 0.4, 0.8),
             rightWing = new THREE.BoxGeometry(0.15, 0.4, 0.8),
             tail = new THREE.BoxGeometry(0.5, 0.4, 0.1);
-        lowerBody.applyMatrix(new THREE.Matrix4().makeTranslation(0, lowerBody.parameters.height/2 + 0.5, 0));
-        upperBody.applyMatrix(new THREE.Matrix4().makeTranslation(0, upperBody.parameters.height/2 + 1.1, 0.2));
-        leftWing.applyMatrix(new THREE.Matrix4().makeTranslation(leftWing.parameters.width/2 + lowerBody.parameters.width/2, leftWing.parameters.height/2 + 0.6, 0));
-        rightWing.applyMatrix(new THREE.Matrix4().makeTranslation(-rightWing.parameters.width/2 - lowerBody.parameters.width/2, rightWing.parameters.height/2 + 0.6, 0));
-        tail.applyMatrix(new THREE.Matrix4().makeTranslation(0, lowerBody.parameters.height/2 + 0.5, -tail.parameters.depth/2 - 0.6));
+        lowerBody.applyMatrix4(new THREE.Matrix4().makeTranslation(0, lowerBody.parameters.height/2 + 0.5, 0));
+		upperBody.applyMatrix4(new THREE.Matrix4().makeTranslation(0, upperBody.parameters.height/2 + 1.1, 0.2));
+		leftWing.applyMatrix4(new THREE.Matrix4().makeTranslation(leftWing.parameters.width/2 + lowerBody.parameters.width/2, leftWing.parameters.height/2 + 0.6, 0));
+		rightWing.applyMatrix4(new THREE.Matrix4().makeTranslation(-rightWing.parameters.width/2 - lowerBody.parameters.width/2, rightWing.parameters.height/2 + 0.6, 0));
+		tail.applyMatrix4(new THREE.Matrix4().makeTranslation(0, lowerBody.parameters.height/2 + 0.5, -tail.parameters.depth/2 - 0.6));
         let body = new THREE.Mesh(BufferGeometryUtils.mergeGeometries([lowerBody, upperBody, leftWing, rightWing, tail]), white);
         body.castShadow = true;
         body.receiveShadow = true;
         this.model.add(body);
 
         let eyeGeo = new THREE.BoxGeometry(0.72, 0.12, 0.12);
-        eyeGeo.applyMatrix(new THREE.Matrix4().makeTranslation(0, 1.55, 0.32));
+        eyeGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 1.55, 0.32));
         let eyes = new THREE.Mesh(eyeGeo, black);
         eyes.castShadow = true;
         eyes.receiveShadow = true;
@@ -174,8 +174,8 @@ class Chicken{
         
         let lowerBeak = new THREE.BoxGeometry(0.2, 0.2, 0.2),
             comb = new THREE.BoxGeometry(0.2, 0.15, 0.5);
-            lowerBeak.applyMatrix(new THREE.Matrix4().makeTranslation(0, 1.3, lowerBeak.parameters.depth/2 + 0.6));
-            comb.applyMatrix(new THREE.Matrix4().makeTranslation(0, comb.parameters.height/2 + 1.775, 0.2));
+            lowerBeak.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 1.3, lowerBeak.parameters.depth/2 + 0.6));
+		comb.applyMatrix4(new THREE.Matrix4().makeTranslation(0, comb.parameters.height/2 + 1.775, 0.2));
         let lowerBeakAndComb = new THREE.Mesh(BufferGeometryUtils.mergeGeometries([lowerBeak, comb]), red);
         lowerBeakAndComb.castShadow = true;
         lowerBeakAndComb.receiveShadow = true;
@@ -325,9 +325,9 @@ class Road{
         let leftRoadGeo = new THREE.BoxGeometry(cellWidth * columns, cellWidth, cellWidth),
             middleRoadGeo = new THREE.BoxGeometry(cellWidth * columns, cellWidth, cellWidth),
             rightRoadGeo = new THREE.BoxGeometry(cellWidth * columns, cellWidth, cellWidth);
-        leftRoadGeo.applyMatrix(new THREE.Matrix4().makeTranslation(-columns * cellWidth, -leftRoadGeo.parameters.height/2, 0));
-        rightRoadGeo.applyMatrix(new THREE.Matrix4().makeTranslation(columns * cellWidth, -rightRoadGeo.parameters.height/2, 0));
-        middleRoadGeo.applyMatrix(new THREE.Matrix4().makeTranslation(0, -middleRoadGeo.parameters.height/2, 0));
+        leftRoadGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(-columns * cellWidth, -leftRoadGeo.parameters.height/2, 0));
+		rightRoadGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(columns * cellWidth, -rightRoadGeo.parameters.height/2, 0));
+		middleRoadGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(0, -middleRoadGeo.parameters.height/2, 0));
         let side = new THREE.Mesh(BufferGeometryUtils.mergeGeometries([leftRoadGeo, rightRoadGeo]), new THREE.MeshPhongMaterial({color: 0x1C1E24}));
         this.model.add(side);
         let center = new THREE.Mesh(middleRoadGeo, new THREE.MeshPhongMaterial({color: 0x373A44}));
@@ -339,13 +339,13 @@ class Road{
         for(let column = 0; column < columns; column+=2){
             let left = new THREE.BoxGeometry(cellWidth, cellWidth/20, cellWidth/20),
                 right = new THREE.BoxGeometry(cellWidth, cellWidth/20, cellWidth/20);
-            left.applyMatrix(new THREE.Matrix4().makeTranslation(column * cellWidth, 0, cellWidth/2  - left.parameters.depth/2));
-            right.applyMatrix(new THREE.Matrix4().makeTranslation(column * cellWidth, 0, -cellWidth/2 + right.parameters.depth/2));
+            left.applyMatrix4(new THREE.Matrix4().makeTranslation(column * cellWidth, 0, cellWidth/2  - left.parameters.depth/2));
+			right.applyMatrix4(new THREE.Matrix4().makeTranslation(column * cellWidth, 0, -cellWidth/2 + right.parameters.depth/2));
             markings.push(left);
             markings.push(right);
         }
         let patternGeo = BufferGeometryUtils.mergeGeometries(markings);
-        patternGeo.applyMatrix(new THREE.Matrix4().makeTranslation(cellWidth/2 - cellWidth * columns/2  + offset, 0, 0));
+        patternGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(cellWidth/2 - cellWidth * columns/2  + offset, 0, 0));
         let pattern = new THREE.Mesh(patternGeo, new THREE.MeshPhongMaterial({color: 0xffffff}));
         this.model.add(pattern);
         return this.model;
@@ -360,9 +360,9 @@ class Lawn{
             let leftLawnGeo = new THREE.BoxGeometry(cellWidth * columns, cellWidth, cellWidth),
                 middleLawnGeo = new THREE.BoxGeometry(cellWidth * columns, cellWidth, cellWidth),
                 rightLawnGeo = new THREE.BoxGeometry(cellWidth * columns, cellWidth, cellWidth);
-            leftLawnGeo.applyMatrix(new THREE.Matrix4().makeTranslation(-columns * cellWidth, -leftLawnGeo.parameters.height/2, 0));
-            rightLawnGeo.applyMatrix(new THREE.Matrix4().makeTranslation(columns * cellWidth, -rightLawnGeo.parameters.height/2, 0));
-            middleLawnGeo.applyMatrix(new THREE.Matrix4().makeTranslation(0, -middleLawnGeo.parameters.height/2, 0));
+            leftLawnGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(-columns * cellWidth, -leftLawnGeo.parameters.height/2, 0));
+		rightLawnGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(columns * cellWidth, -rightLawnGeo.parameters.height/2, 0));
+		middleLawnGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(0, -middleLawnGeo.parameters.height/2, 0));
             let side = new THREE.Mesh(BufferGeometryUtils.mergeGeometries([leftLawnGeo, rightLawnGeo]), new THREE.MeshPhongMaterial({color: 0x598800}));
             this.model.add(side);
             let center = new THREE.Mesh(middleLawnGeo, new THREE.MeshPhongMaterial({color: 0x78AE00}));
@@ -370,7 +370,7 @@ class Lawn{
             this.model.add(center);
         } else{
             let geometry = new THREE.BoxGeometry(cellWidth * columns * 3, cellWidth, cellWidth);
-            geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, -geometry.parameters.height/2, 0));
+            geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, -geometry.parameters.height/2, 0));
             this.model = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({color: 0x598800}));
         }
         return this.model;
@@ -384,9 +384,9 @@ class River{
         let leftRiverGeo = new THREE.BoxGeometry(cellWidth * columns, 3 * cellWidth/4, cellWidth),
             middleRiverGeo = new THREE.BoxGeometry(cellWidth * columns, 3 * cellWidth/4, cellWidth),
             rightRiverGeo = new THREE.BoxGeometry(cellWidth * columns, 3 * cellWidth/4, cellWidth);
-        leftRiverGeo.applyMatrix(new THREE.Matrix4().makeTranslation(-columns * cellWidth, -leftRiverGeo.parameters.height/2 - cellWidth/4, 0));
-        rightRiverGeo.applyMatrix(new THREE.Matrix4().makeTranslation(columns * cellWidth, -rightRiverGeo.parameters.height/2 - cellWidth/4, 0));
-        middleRiverGeo.applyMatrix(new THREE.Matrix4().makeTranslation(0, -middleRiverGeo.parameters.height/2 - cellWidth/4, 0));
+        leftRiverGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(-columns * cellWidth, -leftRiverGeo.parameters.height/2 - cellWidth/4, 0));
+		rightRiverGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(columns * cellWidth, -rightRiverGeo.parameters.height/2 - cellWidth/4, 0));
+		middleRiverGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(0, -middleRiverGeo.parameters.height/2 - cellWidth/4, 0));
         let side = new THREE.Mesh(BufferGeometryUtils.mergeGeometries([leftRiverGeo, rightRiverGeo]), new THREE.MeshPhongMaterial({color: 0x8a2be2}));
         this.model.add(side);
         let center = new THREE.Mesh(middleRiverGeo, new THREE.MeshPhongMaterial({color: 0x9932cc}));
@@ -396,8 +396,8 @@ class River{
         let planes = [];
         for(let i = 0; i < 4; ++i){
             let plane = new THREE.BoxGeometry(cellWidth/3, cellWidth/60, cellWidth/3);
-            plane.applyMatrix(new THREE.Matrix4().makeRotationY(Math.random() * 6.28));
-            plane.applyMatrix(new THREE.Matrix4().makeTranslation(i%2? -cellWidth/8 : cellWidth/8, 0, (i - 1.5) * cellWidth/4));
+            plane.applyMatrix4(new THREE.Matrix4().makeRotationY(Math.random() * 6.28));
+			plane.applyMatrix4(new THREE.Matrix4().makeTranslation(i%2? -cellWidth/8 : cellWidth/8, 0, (i - 1.5) * cellWidth/4));
             planes.push(plane);
         }
         let planeLeft = new THREE.Mesh(BufferGeometryUtils.mergeGeometries(planes), new THREE.MeshBasicMaterial({color: 0xeeeeee})), planeRight = planeLeft.clone();
@@ -416,9 +416,9 @@ class Rail{
         let leftRoadGeo = new THREE.BoxGeometry(cellWidth * columns, cellWidth, cellWidth),
             middleRoadGeo = new THREE.BoxGeometry(cellWidth * columns, cellWidth, cellWidth),
             rightRoadGeo = new THREE.BoxGeometry(cellWidth * columns, cellWidth, cellWidth);
-        leftRoadGeo.applyMatrix(new THREE.Matrix4().makeTranslation(-columns * cellWidth, -leftRoadGeo.parameters.height/2, 0));
-        rightRoadGeo.applyMatrix(new THREE.Matrix4().makeTranslation(columns * cellWidth, -rightRoadGeo.parameters.height/2, 0));
-        middleRoadGeo.applyMatrix(new THREE.Matrix4().makeTranslation(0, -middleRoadGeo.parameters.height/2, 0));
+        leftRoadGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(-columns * cellWidth, -leftRoadGeo.parameters.height/2, 0));
+		rightRoadGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(columns * cellWidth, -rightRoadGeo.parameters.height/2, 0));
+		middleRoadGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(0, -middleRoadGeo.parameters.height/2, 0));
         let side = new THREE.Mesh(BufferGeometryUtils.mergeGeometries([leftRoadGeo, rightRoadGeo]), new THREE.MeshPhongMaterial({color: 0x1C1E24}));
         this.model.add(side);
         let center = new THREE.Mesh(middleRoadGeo, new THREE.MeshPhongMaterial({color: 0x373A44}));
@@ -431,12 +431,12 @@ class Rail{
             centerRailGeo2 = new THREE.BoxGeometry(cellWidth * columns, cellWidth/20, cellWidth/10),
             rightRailGeo1 = new THREE.BoxGeometry(cellWidth * columns, cellWidth/20, cellWidth/10),
             rightRailGeo2 = new THREE.BoxGeometry(cellWidth * columns, cellWidth/20, cellWidth/10);
-        leftRailGeo1.applyMatrix(new THREE.Matrix4().makeTranslation(-columns * cellWidth, leftRailGeo1.parameters.height/2 + leftRailGeo1.parameters.height, -leftRailGeo1.parameters.depth/2 + cellWidth/2 - leftRailGeo1.parameters.depth));
-        leftRailGeo2.applyMatrix(new THREE.Matrix4().makeTranslation(-columns * cellWidth, leftRailGeo2.parameters.height/2 + leftRailGeo2.parameters.height, leftRailGeo2.parameters.depth/2 - cellWidth/2 + leftRailGeo2.parameters.depth));
-        centerRailGeo1.applyMatrix(new THREE.Matrix4().makeTranslation(0, centerRailGeo1.parameters.height/2 + centerRailGeo1.parameters.height, -centerRailGeo1.parameters.depth/2 + cellWidth/2 - centerRailGeo1.parameters.depth));
-        centerRailGeo2.applyMatrix(new THREE.Matrix4().makeTranslation(0, centerRailGeo2.parameters.height/2 + centerRailGeo2.parameters.height, centerRailGeo2.parameters.depth/2 - cellWidth/2 + centerRailGeo2.parameters.depth));
-        rightRailGeo1.applyMatrix(new THREE.Matrix4().makeTranslation(columns * cellWidth, rightRailGeo1.parameters.height/2 + rightRailGeo1.parameters.height, -rightRailGeo1.parameters.depth/2 + cellWidth/2 - rightRailGeo1.parameters.depth));
-        rightRailGeo2.applyMatrix(new THREE.Matrix4().makeTranslation(columns * cellWidth, rightRailGeo2.parameters.height/2 + rightRailGeo2.parameters.height, rightRailGeo2.parameters.depth/2 - cellWidth/2 + rightRailGeo2.parameters.depth));
+        leftRailGeo1.applyMatrix4(new THREE.Matrix4().makeTranslation(-columns * cellWidth, leftRailGeo1.parameters.height/2 + leftRailGeo1.parameters.height, -leftRailGeo1.parameters.depth/2 + cellWidth/2 - leftRailGeo1.parameters.depth));
+		leftRailGeo2.applyMatrix4(new THREE.Matrix4().makeTranslation(-columns * cellWidth, leftRailGeo2.parameters.height/2 + leftRailGeo2.parameters.height, leftRailGeo2.parameters.depth/2 - cellWidth/2 + leftRailGeo2.parameters.depth));
+		centerRailGeo1.applyMatrix4(new THREE.Matrix4().makeTranslation(0, centerRailGeo1.parameters.height/2 + centerRailGeo1.parameters.height, -centerRailGeo1.parameters.depth/2 + cellWidth/2 - centerRailGeo1.parameters.depth));
+		centerRailGeo2.applyMatrix4(new THREE.Matrix4().makeTranslation(0, centerRailGeo2.parameters.height/2 + centerRailGeo2.parameters.height, centerRailGeo2.parameters.depth/2 - cellWidth/2 + centerRailGeo2.parameters.depth));
+		rightRailGeo1.applyMatrix4(new THREE.Matrix4().makeTranslation(columns * cellWidth, rightRailGeo1.parameters.height/2 + rightRailGeo1.parameters.height, -rightRailGeo1.parameters.depth/2 + cellWidth/2 - rightRailGeo1.parameters.depth));
+		rightRailGeo2.applyMatrix4(new THREE.Matrix4().makeTranslation(columns * cellWidth, rightRailGeo2.parameters.height/2 + rightRailGeo2.parameters.height, rightRailGeo2.parameters.depth/2 - cellWidth/2 + rightRailGeo2.parameters.depth));
         let sideRail = new THREE.Mesh(BufferGeometryUtils.mergeGeometries([leftRailGeo1, leftRailGeo2, rightRailGeo1, rightRailGeo2]), new THREE.MeshPhongMaterial({color: 0x5F636D}));
         this.model.add(sideRail);
         let centerRail = new THREE.Mesh(BufferGeometryUtils.mergeGeometries([centerRailGeo1, centerRailGeo2]), new THREE.MeshPhongMaterial({color: 0x878D98}));
@@ -450,9 +450,9 @@ class Rail{
             let left = new THREE.BoxGeometry(cellWidth/10, cellWidth/20, cellWidth),
                 middle = new THREE.BoxGeometry(cellWidth/10, cellWidth/20, cellWidth),
                 right = new THREE.BoxGeometry(cellWidth/10, cellWidth/20, cellWidth);
-            left.applyMatrix(new THREE.Matrix4().makeTranslation(column * cellWidth - columns * cellWidth - Math.floor(columns/2) * cellWidth + offset, left.parameters.height/2, 0));
-            middle.applyMatrix(new THREE.Matrix4().makeTranslation(column * cellWidth - Math.floor(columns/2) * cellWidth + offset, middle.parameters.height/2, 0));
-            right.applyMatrix(new THREE.Matrix4().makeTranslation(column * cellWidth + columns * cellWidth - Math.floor(columns/2) * cellWidth + offset, right.parameters.height/2, 0));
+            left.applyMatrix4(new THREE.Matrix4().makeTranslation(column * cellWidth - columns * cellWidth - Math.floor(columns/2) * cellWidth + offset, left.parameters.height/2, 0));
+			middle.applyMatrix4(new THREE.Matrix4().makeTranslation(column * cellWidth - Math.floor(columns/2) * cellWidth + offset, middle.parameters.height/2, 0));
+			right.applyMatrix4(new THREE.Matrix4().makeTranslation(column * cellWidth + columns * cellWidth - Math.floor(columns/2) * cellWidth + offset, right.parameters.height/2, 0));
             sideBars.push(left);
             centerBars.push(middle);
             sideBars.push(right);
@@ -489,11 +489,11 @@ class Car{
             window1 = new THREE.BoxGeometry(1, 0.65, 1.45),
             window2 = new THREE.BoxGeometry(0.4, 0.65, 1.45),
             window3 = new THREE.BoxGeometry(2.05, 0.65, 1.2);
-        wheel1.applyMatrix(new THREE.Matrix4().makeTranslation(-0.2, wheel1.parameters.height/2, 0));
-        wheel2.applyMatrix(new THREE.Matrix4().makeTranslation(lowerBody.geometry.parameters.width/2 + 0.2, wheel2.parameters.height/2, 0));
-        window1.applyMatrix(new THREE.Matrix4().makeTranslation(1.2, 1.2125, 0));
-        window2.applyMatrix(new THREE.Matrix4().makeTranslation(2.1, 1.2125, 0));
-        window3.applyMatrix(new THREE.Matrix4().makeTranslation(1.5, 1.2125, 0));
+        wheel1.applyMatrix4(new THREE.Matrix4().makeTranslation(-0.2, wheel1.parameters.height/2, 0));
+		wheel2.applyMatrix4(new THREE.Matrix4().makeTranslation(lowerBody.geometry.parameters.width/2 + 0.2, wheel2.parameters.height/2, 0));
+		window1.applyMatrix4(new THREE.Matrix4().makeTranslation(1.2, 1.2125, 0));
+		window2.applyMatrix4(new THREE.Matrix4().makeTranslation(2.1, 1.2125, 0));
+		window3.applyMatrix4(new THREE.Matrix4().makeTranslation(1.5, 1.2125, 0));
         let wheelsAndWindows = new THREE.Mesh(BufferGeometryUtils.mergeGeometries([wheel1, wheel2, window1, window2, window3]), new THREE.MeshLambertMaterial({color: 0x000000}));
         wheelsAndWindows.castShadow = true;
         wheelsAndWindows.receiveShadow = true;
@@ -502,9 +502,9 @@ class Car{
         let upperBodyGeo = new THREE.BoxGeometry(2, 0.75, 1.4),
             innerWheel1 =  new THREE.BoxGeometry(wheel1.parameters.width * 0.5, wheel1.parameters.height * 0.5, wheel1.parameters.depth + 0.01),
             innerWheel2 =  new THREE.BoxGeometry(wheel2.parameters.width * 0.5, wheel2.parameters.height * 0.5, wheel2.parameters.depth + 0.01);
-        upperBodyGeo.applyMatrix(new THREE.Matrix4().makeTranslation(3 * upperBodyGeo.parameters.width/4, lowerBody.position.y + lowerBody.geometry.parameters.height/2 + upperBodyGeo.parameters.height/2, 0));
-        innerWheel1.applyMatrix(new THREE.Matrix4().makeTranslation(-0.2, wheel1.parameters.height/2, 0));
-        innerWheel2.applyMatrix(new THREE.Matrix4().makeTranslation(lowerBody.geometry.parameters.width/2 + 0.2, wheel2.parameters.height/2, 0));
+        upperBodyGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(3 * upperBodyGeo.parameters.width/4, lowerBody.position.y + lowerBody.geometry.parameters.height/2 + upperBodyGeo.parameters.height/2, 0));
+		innerWheel1.applyMatrix4(new THREE.Matrix4().makeTranslation(-0.2, wheel1.parameters.height/2, 0));
+		innerWheel2.applyMatrix4(new THREE.Matrix4().makeTranslation(lowerBody.geometry.parameters.width/2 + 0.2, wheel2.parameters.height/2, 0));
         let upperBody = new THREE.Mesh(BufferGeometryUtils.mergeGeometries([upperBodyGeo, innerWheel1, innerWheel2]), new THREE.MeshLambertMaterial({color: 0xffffff}));
         upperBody.castShadow = true;
         upperBody.receiveShadow = true;
@@ -514,10 +514,10 @@ class Car{
             strip2 = new THREE.BoxGeometry(0.5, 0.25, 2.2),
             strip3 = new THREE.BoxGeometry(4.01, 0.25, 1.81),
             strip4 = new THREE.BoxGeometry(0.4, 0.2, 1);
-        strip1.applyMatrix(new THREE.Matrix4().makeTranslation(lowerBody.position.x, lowerBody.position.y + 0.025, 0));
-        strip2.applyMatrix(new THREE.Matrix4().makeTranslation(1, lowerBody.position.y + 0.15, 0));
-        strip3.applyMatrix(new THREE.Matrix4().makeTranslation(lowerBody.position.x, lowerBody.position.y, lowerBody.position.z));
-        strip4.applyMatrix(new THREE.Matrix4().makeTranslation(3 * upperBodyGeo.parameters.width/4 - 0.2, color == 'yellow'? 1.75 : 1, 0));
+        strip1.applyMatrix4(new THREE.Matrix4().makeTranslation(lowerBody.position.x, lowerBody.position.y + 0.025, 0));
+		strip2.applyMatrix4(new THREE.Matrix4().makeTranslation(1, lowerBody.position.y + 0.15, 0));
+		strip3.applyMatrix4(new THREE.Matrix4().makeTranslation(lowerBody.position.x, lowerBody.position.y, lowerBody.position.z));
+		strip4.applyMatrix4(new THREE.Matrix4().makeTranslation(3 * upperBodyGeo.parameters.width/4 - 0.2, color == 'yellow'? 1.75 : 1, 0));
         let strips = new THREE.Mesh(BufferGeometryUtils.mergeGeometries([strip1, strip2, strip3, strip4]), new THREE.MeshLambertMaterial({color: dark}));
         strips.castShadow = true;
         strips.receiveShadow = true;
@@ -572,8 +572,8 @@ class Truck{
         
         let bodyGeo = new THREE.BoxGeometry(1.6, 1.5, 1.4),
             stripGeo = new THREE.BoxGeometry(0.2, 0.3, 1.8);
-        bodyGeo.applyMatrix(new THREE.Matrix4().makeTranslation(-0.2, 0.1875 + bodyGeo.parameters.height/2, 0));
-        stripGeo.applyMatrix(new THREE.Matrix4().makeTranslation(-0.6, 0.8, 0));
+        bodyGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(-0.2, 0.1875 + bodyGeo.parameters.height/2, 0));
+		stripGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(-0.6, 0.8, 0));
         let body = new THREE.Mesh(BufferGeometryUtils.mergeGeometries([bodyGeo, stripGeo]), new THREE.MeshLambertMaterial({color: light}));
         body.castShadow = true;
         body.receiveShadow = true;
@@ -589,10 +589,10 @@ class Truck{
             wheel1 = new THREE.BoxGeometry(0.5, 0.5, 1.45),
             wheel2 = new THREE.BoxGeometry(0.5, 0.5, 1.45),
             wheel3 = new THREE.BoxGeometry(0.5, 0.5, 1.45);
-        window.applyMatrix(new THREE.Matrix4().makeTranslation(-0.6, window.parameters.height/2 + 1, 0));
-        wheel1.applyMatrix(new THREE.Matrix4().makeTranslation(0, wheel1.parameters.height/2, 0));
-        wheel2.applyMatrix(new THREE.Matrix4().makeTranslation(1.8, wheel2.parameters.height/2, 0));
-        wheel3.applyMatrix(new THREE.Matrix4().makeTranslation(4.2, wheel3.parameters.height/2, 0));
+        window.applyMatrix4(new THREE.Matrix4().makeTranslation(-0.6, window.parameters.height/2 + 1, 0));
+		wheel1.applyMatrix4(new THREE.Matrix4().makeTranslation(0, wheel1.parameters.height/2, 0));
+		wheel2.applyMatrix4(new THREE.Matrix4().makeTranslation(1.8, wheel2.parameters.height/2, 0));
+		wheel3.applyMatrix4(new THREE.Matrix4().makeTranslation(4.2, wheel3.parameters.height/2, 0));
         let wheelsAndWindows = new THREE.Mesh(BufferGeometryUtils.mergeGeometries([window, wheel1, wheel2, wheel3]), new THREE.MeshLambertMaterial({color: 0x000000}));
         wheelsAndWindows.castShadow = true;
         wheelsAndWindows.receiveShadow = true;
@@ -601,9 +601,9 @@ class Truck{
         let top1 = new THREE.BoxGeometry(0.6, 0.15, 1),
             top2 = new THREE.BoxGeometry(0.3, 0.15, 1),
             trunk = new THREE.BoxGeometry(4, 2, 1.8);
-        top1.applyMatrix(new THREE.Matrix4().makeTranslation(0.3, 1.75, 0));
-        top2.applyMatrix(new THREE.Matrix4().makeTranslation(0.45, 1.9, 0));
-        trunk.applyMatrix(new THREE.Matrix4().makeTranslation(3, trunk.parameters.height/2 + 0.5, 0));
+        top1.applyMatrix4(new THREE.Matrix4().makeTranslation(0.3, 1.75, 0));
+		top2.applyMatrix4(new THREE.Matrix4().makeTranslation(0.45, 1.9, 0));
+		trunk.applyMatrix4(new THREE.Matrix4().makeTranslation(3, trunk.parameters.height/2 + 0.5, 0));
         let trunkAndCenter = new THREE.Mesh(BufferGeometryUtils.mergeGeometries([top1, top2, trunk]), new THREE.MeshLambertMaterial({color: 0xd6bafe}));
         trunkAndCenter.castShadow = true;
         trunkAndCenter.receiveShadow = true;
@@ -612,9 +612,9 @@ class Truck{
         let middle = new THREE.BoxGeometry(0.4, 0.2, 1.2),
             lowerTrunkGeo = new THREE.BoxGeometry(4, 0.3125, 1.4),
             lowerStripGeo = new THREE.BoxGeometry(1.61, 0.3125, 1.41);
-        middle.applyMatrix(new THREE.Matrix4().makeTranslation(0.8, 0.4, 0));
-        lowerTrunkGeo.applyMatrix(new THREE.Matrix4().makeTranslation(3, 0.1875 + lowerTrunkGeo.parameters.height/2, 0));
-        lowerStripGeo.applyMatrix(new THREE.Matrix4().makeTranslation(-0.21, 0.1875 + lowerStripGeo.parameters.height/2, 0));
+        middle.applyMatrix4(new THREE.Matrix4().makeTranslation(0.8, 0.4, 0));
+		lowerTrunkGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(3, 0.1875 + lowerTrunkGeo.parameters.height/2, 0));
+		lowerStripGeo.applyMatrix4(new THREE.Matrix4().makeTranslation(-0.21, 0.1875 + lowerStripGeo.parameters.height/2, 0));
         let lowerTrunk = new THREE.Mesh(BufferGeometryUtils.mergeGeometries([middle, lowerTrunkGeo, lowerStripGeo]), new THREE.MeshLambertMaterial({color: 0x645991}));
         lowerTrunk.castShadow = true;
         lowerTrunk.receiveShadow = true;
@@ -666,9 +666,9 @@ class Truck{
         let innerWheel1 = new THREE.BoxGeometry(0.25, 0.25, 1.46),
             innerWheel2 = new THREE.BoxGeometry(0.25, 0.25, 1.46),
             innerWheel3 = new THREE.BoxGeometry(0.25, 0.25, 1.46);
-        innerWheel1.applyMatrix(new THREE.Matrix4().makeTranslation(0, innerWheel1.parameters.height, 0));
-        innerWheel2.applyMatrix(new THREE.Matrix4().makeTranslation(1.8, innerWheel2.parameters.height, 0));
-        innerWheel3.applyMatrix(new THREE.Matrix4().makeTranslation(4.2, innerWheel3.parameters.height, 0));
+        innerWheel1.applyMatrix4(new THREE.Matrix4().makeTranslation(0, innerWheel1.parameters.height, 0));
+		innerWheel2.applyMatrix4(new THREE.Matrix4().makeTranslation(1.8, innerWheel2.parameters.height, 0));
+		innerWheel3.applyMatrix4(new THREE.Matrix4().makeTranslation(4.2, innerWheel3.parameters.height, 0));
         let innerWheels = new THREE.Mesh(BufferGeometryUtils.mergeGeometries([innerWheel1, innerWheel2, innerWheel3]), new THREE.MeshLambertMaterial({color: 0xffffff}));
         innerWheels.castShadow = true;
         innerWheels.receiveShadow = true;
@@ -696,42 +696,42 @@ class ChewChewTrain{
         this.model = new THREE.Group();
         for(let cabin = 0; cabin < length; ++cabin){
             let body = new THREE.BoxGeometry(7.2, 2.5, 1.8);
-            body.applyMatrix(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset, body.parameters.height/2 + groundHeight, 0));
+            body.applyMatrix4(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset, body.parameters.height/2 + groundHeight, 0));
             meshes[2].geometries.push(body);
             let body1 = new THREE.BoxGeometry(4.8, 2.1, 1.85);
-            body1.applyMatrix(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset, body1.parameters.height/2 + groundHeight + 0.2, 0));
+            body1.applyMatrix4(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset, body1.parameters.height/2 + groundHeight + 0.2, 0));
             meshes[1].geometries.push(body1);
             let body2 = new THREE.BoxGeometry(2.4, 2.1, 1.9);
-            body2.applyMatrix(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset, body2.parameters.height/2 + groundHeight + 0.2, 0));
+            body2.applyMatrix4(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset, body2.parameters.height/2 + groundHeight + 0.2, 0));
             meshes[4].geometries.push(body2);
             let top = new THREE.BoxGeometry(6, groundHeight, 1.2);
-            top.applyMatrix(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset, top.parameters.height/2 + groundHeight +body.parameters.height, 0));
+            top.applyMatrix4(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset, top.parameters.height/2 + groundHeight +body.parameters.height, 0));
             meshes[3].geometries.push(top);
             if(cabin == 0 || cabin == length - 1){
                 let front = new THREE.BoxGeometry(0.6, body.parameters.height + groundHeight, 2);
-                front.applyMatrix(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset + body.parameters.width/2, body.parameters.height/2 + groundHeight, 0));
+                front.applyMatrix4(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset + body.parameters.width/2, body.parameters.height/2 + groundHeight, 0));
                 if (cabin == 0){
-                    front.applyMatrix(new THREE.Matrix4().makeTranslation(-body.parameters.width, 0, 0));
+                    front.applyMatrix4(new THREE.Matrix4().makeTranslation(-body.parameters.width, 0, 0));
                     let frontWindow = new THREE.BoxGeometry(0.8, 0.8, 1.6);
-                    frontWindow.applyMatrix(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset - body.parameters.width/2, frontWindow.parameters.height/2 + 1.5, 0));
+                    frontWindow.applyMatrix4(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset - body.parameters.width/2, frontWindow.parameters.height/2 + 1.5, 0));
                     meshes[5].geometries.push(frontWindow);
                     let headlight1 = new THREE.BoxGeometry(0.8, 0.2, 0.4);
-                    headlight1.applyMatrix(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset - body.parameters.width/2, headlight1.parameters.height/2 + 0.8, -frontWindow.parameters.depth/2 + headlight1.parameters.depth/2));
+                    headlight1.applyMatrix4(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset - body.parameters.width/2, headlight1.parameters.height/2 + 0.8, -frontWindow.parameters.depth/2 + headlight1.parameters.depth/2));
                     meshes[4].geometries.push(headlight1);
                     let headlight2 = new THREE.BoxGeometry(0.8, 0.2, 0.4);
-                    headlight2.applyMatrix(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset - body.parameters.width/2, headlight2.parameters.height/2 + 0.8, frontWindow.parameters.depth/2 - headlight2.parameters.depth/2));
+                    headlight2.applyMatrix4(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset - body.parameters.width/2, headlight2.parameters.height/2 + 0.8, frontWindow.parameters.depth/2 - headlight2.parameters.depth/2));
                     meshes[4].geometries.push(headlight2);
                 }
                 meshes[0].geometries.push(front);
             }
             if(cabin > 0){
                 let middle = new THREE.BoxGeometry(0.8, body.parameters.height - 0.4, body.parameters.depth - 0.4);
-                middle.applyMatrix(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset - 8/2, middle.parameters.height/2 + groundHeight + (body.parameters.height - middle.parameters.height)/2, 0));
+                middle.applyMatrix4(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset - 8/2, middle.parameters.height/2 + groundHeight + (body.parameters.height - middle.parameters.height)/2, 0));
                 meshes[0].geometries.push(middle);
             }
             for (let i = -2.5; i <= 2.5; ++i){
                 let window = new THREE.BoxGeometry(0.5, 1, 1.95);
-                window.applyMatrix(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset + 1.2 * i, window.parameters.height/2 + 1.2, 0));
+                window.applyMatrix4(new THREE.Matrix4().makeTranslation(spacing * cabin + startOffset + 1.2 * i, window.parameters.height/2 + 1.2, 0));
                 meshes[5].geometries.push(window);
             }
         }
@@ -758,21 +758,21 @@ class Tree{
         this.model.add(trunk);
         let trunk1 = new THREE.BoxGeometry(width/6, height, width/2 + 0.05),
             trunk2 = new THREE.BoxGeometry(width/2 + 0.05, height, width/6);
-        trunk1.applyMatrix(new THREE.Matrix4().makeTranslation(0, trunk1.parameters.height/2, 0));
-        trunk2.applyMatrix(new THREE.Matrix4().makeTranslation(0, trunk2.parameters.height/2, 0));
+        trunk1.applyMatrix4(new THREE.Matrix4().makeTranslation(0, trunk1.parameters.height/2, 0));
+		trunk2.applyMatrix4(new THREE.Matrix4().makeTranslation(0, trunk2.parameters.height/2, 0));
         let trunks = new THREE.Mesh(BufferGeometryUtils.mergeGeometries([trunk1, trunk2]), new THREE.MeshLambertMaterial({color: 0xD4C4AF}));
         this.model.add(trunks);
         let darkLeaves = [], brightLeaves = [];
         let lowerLeaf = new THREE.BoxGeometry(width, smallerHeight, width);
-        lowerLeaf.applyMatrix(new THREE.Matrix4().makeTranslation(0, lowerLeaf.parameters.height/2 + trunk.geometry.parameters.height, 0));
+        lowerLeaf.applyMatrix4(new THREE.Matrix4().makeTranslation(0, lowerLeaf.parameters.height/2 + trunk.geometry.parameters.height, 0));
         darkLeaves.push(lowerLeaf);
         let startHeight = lowerLeaf.parameters.height + trunk.geometry.parameters.height, gap = startHeight;
         for(let layer = 0; layer < layers; ++layer){
             let middleLeaf = new THREE.BoxGeometry(width, height, width)
-            middleLeaf.applyMatrix(new THREE.Matrix4().makeTranslation(0, middleLeaf.parameters.height/2 + startHeight + layer * gap, 0));
+            middleLeaf.applyMatrix4(new THREE.Matrix4().makeTranslation(0, middleLeaf.parameters.height/2 + startHeight + layer * gap, 0));
             brightLeaves.push(middleLeaf);
             let upperLeaf = new THREE.BoxGeometry(width, smallerHeight, width);
-            upperLeaf.applyMatrix(new THREE.Matrix4().makeTranslation(0, upperLeaf.parameters.height/2 + startHeight + middleLeaf.parameters.height + layer * gap, 0));
+            upperLeaf.applyMatrix4(new THREE.Matrix4().makeTranslation(0, upperLeaf.parameters.height/2 + startHeight + middleLeaf.parameters.height + layer * gap, 0));
             darkLeaves.push(upperLeaf);
         }
         let allDarkLeaves = new THREE.Mesh(BufferGeometryUtils.mergeGeometries(darkLeaves), new THREE.MeshLambertMaterial({color: 0x09A440}));
@@ -798,9 +798,9 @@ class Log{
         let middle = new THREE.BoxGeometry(3.6, 0.25, 1.2),
             front = new THREE.BoxGeometry(3.6, 0.5, 0.2),
             back = new THREE.BoxGeometry(3.6, 0.5, 0.2);
-        middle.applyMatrix(new THREE.Matrix4().makeTranslation(offset, -middle.parameters.height/2, 0));
-        front.applyMatrix(new THREE.Matrix4().makeTranslation(offset, -front.parameters.height/2, front.parameters.depth/2 - middle.parameters.depth/2));
-        back.applyMatrix(new THREE.Matrix4().makeTranslation(offset, -back.parameters.height/2, -back.parameters.depth/2 + middle.parameters.depth/2));
+        middle.applyMatrix4(new THREE.Matrix4().makeTranslation(offset, -middle.parameters.height/2, 0));
+		front.applyMatrix4(new THREE.Matrix4().makeTranslation(offset, -front.parameters.height/2, front.parameters.depth/2 - middle.parameters.depth/2));
+		back.applyMatrix4(new THREE.Matrix4().makeTranslation(offset, -back.parameters.height/2, -back.parameters.depth/2 + middle.parameters.depth/2));
         lightMeshes.push(middle);
         lightMeshes.push(front);
         lightMeshes.push(back);
@@ -812,12 +812,12 @@ class Log{
             middle2 = new THREE.BoxGeometry(0.2, 0.25, 1.2),
             front2 = new THREE.BoxGeometry(0.2, 0.5, 0.2),
             back2 = new THREE.BoxGeometry(0.2, 0.5, 0.2);
-        middle1.applyMatrix(new THREE.Matrix4().makeTranslation(-middle1.parameters.width/2 - middle.parameters.width/2 + offset, -middle1.parameters.height/2, 0));
-        front1.applyMatrix(new THREE.Matrix4().makeTranslation(-front1.parameters.width/2 - middle.parameters.width/2 + offset, -front1.parameters.height/2, front1.parameters.depth/2 - middle1.parameters.depth/2));
-        back1.applyMatrix(new THREE.Matrix4().makeTranslation(-back1.parameters.width/2 - middle.parameters.width/2 + offset, -back1.parameters.height/2, -back1.parameters.depth/2 + middle1.parameters.depth/2));
-        middle2.applyMatrix(new THREE.Matrix4().makeTranslation(middle2.parameters.width/2 + middle.parameters.width/2 + offset, -middle2.parameters.height/2, 0));
-        front2.applyMatrix(new THREE.Matrix4().makeTranslation(front2.parameters.width/2 + middle.parameters.width/2 + offset, -front2.parameters.height/2, front2.parameters.depth/2 - middle2.parameters.depth/2));
-        back2.applyMatrix(new THREE.Matrix4().makeTranslation(back2.parameters.width/2 + middle.parameters.width/2 + offset, -back2.parameters.height/2, -back2.parameters.depth/2 + middle2.parameters.depth/2));
+        middle1.applyMatrix4(new THREE.Matrix4().makeTranslation(-middle1.parameters.width/2 - middle.parameters.width/2 + offset, -middle1.parameters.height/2, 0));
+		front1.applyMatrix4(new THREE.Matrix4().makeTranslation(-front1.parameters.width/2 - middle.parameters.width/2 + offset, -front1.parameters.height/2, front1.parameters.depth/2 - middle1.parameters.depth/2));
+		back1.applyMatrix4(new THREE.Matrix4().makeTranslation(-back1.parameters.width/2 - middle.parameters.width/2 + offset, -back1.parameters.height/2, -back1.parameters.depth/2 + middle1.parameters.depth/2));
+		middle2.applyMatrix4(new THREE.Matrix4().makeTranslation(middle2.parameters.width/2 + middle.parameters.width/2 + offset, -middle2.parameters.height/2, 0));
+		front2.applyMatrix4(new THREE.Matrix4().makeTranslation(front2.parameters.width/2 + middle.parameters.width/2 + offset, -front2.parameters.height/2, front2.parameters.depth/2 - middle2.parameters.depth/2));
+		back2.applyMatrix4(new THREE.Matrix4().makeTranslation(back2.parameters.width/2 + middle.parameters.width/2 + offset, -back2.parameters.height/2, -back2.parameters.depth/2 + middle2.parameters.depth/2));
         whiteMeshes.push(middle1);
         whiteMeshes.push(front1);
         whiteMeshes.push(back1);
@@ -838,7 +838,7 @@ class Log{
                 let xPos = column * 0.4 - 1.8;
                 if (patternPositions[row][column]){
                     let cube = new THREE.BoxGeometry(0.4, 0.02, 0.3);
-                    cube.applyMatrix(new THREE.Matrix4().makeTranslation(xPos + offset, 0, zPos));
+                    cube.applyMatrix4(new THREE.Matrix4().makeTranslation(xPos + offset, 0, zPos));
                     darkMeshes.push(cube);
                 }
             }
