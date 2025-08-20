@@ -1,10 +1,35 @@
 import React, { useEffect, useRef } from 'react';
+import { usePrivy } from '@privy-io/react-auth';
 import * as THREE from 'three';
 import './Game.css';
 
 const Game = () => {
   const gameContainerRef = useRef(null);
   const gameInstanceRef = useRef(null);
+  const { user, logout } = usePrivy();
+  
+  // Get user info
+  const getUsername = () => {
+    if (user && user.linkedAccounts.length > 0) {
+      const crossAppAccount = user.linkedAccounts.filter(
+        account => account.type === "cross_app" && account.providerApp.id === "cmd8euall0037le0my79qpz42"
+      )[0];
+      return crossAppAccount ? crossAppAccount.username || 'Player' : 'Player';
+    }
+    return 'Player';
+  };
+  
+  const getWalletAddress = () => {
+    if (user && user.linkedAccounts.length > 0) {
+      const crossAppAccount = user.linkedAccounts.filter(
+        account => account.type === "cross_app" && account.providerApp.id === "cmd8euall0037le0my79qpz42"
+      )[0];
+      if (crossAppAccount && crossAppAccount.embeddedWallets.length > 0) {
+        return crossAppAccount.embeddedWallets[0].address;
+      }
+    }
+    return null;
+  };
 
   useEffect(() => {
     // Initialize the game when component mounts
@@ -94,8 +119,19 @@ const Game = () => {
         position: 'relative',
         overflow: 'hidden'
       }}
-    />
-  );
+    >
+      {/* User Info Panel */}
+      <div className="user-info-panel">
+        <div className="user-details">
+          <span className="username">👤 {getUsername()}</span>
+          <span className="wallet">💳 {getWalletAddress() ? `${getWalletAddress().slice(0, 6)}...${getWalletAddress().slice(-4)}` : 'No wallet'}</span>
+        </div>
+        <button className="logout-btn" onClick={logout} title="Çıkış Yap">
+          🚪
+        </button>
+      </div>
+     </div>
+   );
 };
 
 export default Game;
