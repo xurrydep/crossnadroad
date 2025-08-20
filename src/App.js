@@ -71,15 +71,17 @@ function GameWithAuth() {
 
   if (!authenticated) {
     return (
-      <div className="auth-screen">
-        <div className="auth-container">
-          <h1>CROSS NAD ROAD</h1>
-          <h2>BY XURRYDEP</h2>
-          <p>Sign in with your Monad Games ID to play!</p>
-          <button 
-            className="auth-button"
-            onClick={login}
-          >
+      <div className="home-screen">
+        <div className="home-container">
+          <h1 className="game-title">CROSS NAD ROAD</h1>
+          <h2 className="game-subtitle">BY XURRYDEP</h2>
+          
+          <div className="game-instructions">
+            <p>Use the arrow keys to move around.</p>
+            <p>Cross as many roads as possible</p>
+          </div>
+          
+          <button className="auth-button" onClick={login}>
             Sign in with Monad Games ID
           </button>
         </div>
@@ -124,14 +126,6 @@ function GameWithAuth() {
     return (
       <div className="home-screen">
         <div className="home-container">
-          <h1 className="game-title">CROSS NAD ROAD</h1>
-          <h2 className="game-subtitle">BY XURRYDEP</h2>
-          
-          <div className="game-instructions">
-            <p>Use the arrow keys to move around.</p>
-            <p>Cross as many roads as possible</p>
-          </div>
-          
           <button 
             className="play-button"
             onClick={() => setGameStarted(true)}
