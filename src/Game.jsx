@@ -12,8 +12,6 @@ const Game = () => {
   
   // State for Monad Games ID username
   const [monadUsername, setMonadUsername] = useState('Player');
-  const [isEditingUsername, setIsEditingUsername] = useState(false);
-  const [tempUsername, setTempUsername] = useState('');
 
   // Get user info
   const getUsername = () => {
@@ -39,60 +37,9 @@ const Game = () => {
     }
   };
 
-  // Save username to Monad Games ID
-  const saveUsername = async (newUsername) => {
-    const walletAddress = getWalletAddress();
-    if (!walletAddress) return false;
 
-    try {
-      const response = await fetch('https://monad-games-id-site.vercel.app/api/reserve-username', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          wallet: walletAddress,
-          username: newUsername
-        })
-      });
 
-      const data = await response.json();
-      if (data.success) {
-        setMonadUsername(newUsername);
-        return true;
-      } else {
-        console.error('Failed to save username:', data.message);
-        return false;
-      }
-    } catch (error) {
-      console.error('Error saving username:', error);
-      return false;
-    }
-  };
 
-  // Handle username edit
-  const handleUsernameEdit = () => {
-    setTempUsername(monadUsername);
-    setIsEditingUsername(true);
-  };
-
-  const handleUsernameSave = async () => {
-    if (tempUsername.trim() && tempUsername !== monadUsername) {
-      const success = await saveUsername(tempUsername.trim());
-      if (success) {
-        setIsEditingUsername(false);
-      } else {
-        alert('Failed to save username. Please try again.');
-      }
-    } else {
-      setIsEditingUsername(false);
-    }
-  };
-
-  const handleUsernameCancel = () => {
-    setTempUsername('');
-    setIsEditingUsername(false);
-  };
   
   const getWalletAddress = () => {
     if (user && user.linkedAccounts.length > 0) {
@@ -257,24 +204,9 @@ const Game = () => {
        <div className="user-info-panel">
          <div className="user-details">
            <div className="username-section">
-             {isEditingUsername ? (
-               <div className="username-edit">
-                 <input 
-                   type="text" 
-                   value={tempUsername} 
-                   onChange={(e) => setTempUsername(e.target.value)}
-                   className="username-input"
-                   maxLength={20}
-                   placeholder="Enter username"
-                 />
-                 <button onClick={handleUsernameSave} className="save-btn">✓</button>
-                 <button onClick={handleUsernameCancel} className="cancel-btn">✗</button>
-               </div>
-             ) : (
-               <span className="username clickable" onClick={handleUsernameEdit}>
-                 👤 {getUsername()} ✏️
-               </span>
-             )}
+             <span className="username">
+               👤 {getUsername()}
+             </span>
            </div>
            <span className="wallet">💳 {getWalletAddress() ? `${getWalletAddress().slice(0, 6)}...${getWalletAddress().slice(-4)}` : 'No wallet'}</span>
          </div>
