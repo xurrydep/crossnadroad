@@ -1420,7 +1420,7 @@ const handleTouchMove = evt =>{
 document.addEventListener('touchstart', handleTouchStart, false);
 document.addEventListener('touchmove', handleTouchMove, false);
 
-// Submit score to leaderboard
+// Submit score to smart contract
 const submitScore = async (score) => {
     try {
         // Get wallet address from React app
@@ -1431,25 +1431,43 @@ const submitScore = async (score) => {
             return;
         }
 
-        const response = await fetch('https://monad-games-id-site.vercel.app/api/submit-score', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                gameId: 57,
-                wallet: walletAddress,
-                score: score
-            })
-        });
-
-        if (response.ok) {
-            console.log('Score submitted successfully:', score);
+        // Import ethers dynamically
+        const { ethers } = await import('ethers');
+        
+        // Check if MetaMask or other wallet provider is available
+        if (typeof window.ethereum !== 'undefined') {
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            const signer = await provider.getSigner();
+            
+            // Contract address and ABI
+            const contractAddress = '0xceCBFF203C8B6044F52CE23D914A1bfD997541A4';
+            const contractABI = [
+                {
+                    "inputs": [
+                        {"internalType": "address", "name": "player", "type": "address"},
+                        {"internalType": "uint256", "name": "scoreAmount", "type": "uint256"},
+                        {"internalType": "uint256", "name": "transactionAmount", "type": "uint256"}
+                    ],
+                    "name": "updatePlayerData",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                }
+            ];
+            
+            const contract = new ethers.Contract(contractAddress, contractABI, signer);
+            
+            // Submit score to smart contract
+            const tx = await contract.updatePlayerData(walletAddress, score, 0);
+            await tx.wait();
+            
+            console.log('Score submitted to smart contract successfully:', score);
+            console.log('Transaction hash:', tx.hash);
         } else {
-            console.error('Failed to submit score:', response.statusText);
+            console.log('No wallet provider found');
         }
     } catch (error) {
-        console.error('Error submitting score:', error);
+        console.error('Error submitting score to smart contract:', error);
     }
 };
 
