@@ -29,7 +29,7 @@ window.firstRun = () =>{
         instructionsEl.innerText = ((/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) ? "Swipe in the direction you wanna move." : "Use the arrow keys to move around.") + "\nCross as many roads as possible";
     }
     
-    // stats = new Stats();
+    stats = { begin: () => {}, end: () => {} }; // Mock stats object
     // stats.showPanel(0);
 
     camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 1000);
