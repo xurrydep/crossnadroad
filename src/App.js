@@ -73,17 +73,29 @@ function GameWithAuth() {
     return (
       <div className="home-screen">
         <div className="home-container">
-          <h1 className="game-title">CROSS NAD ROAD</h1>
-          <h2 className="game-subtitle">BY XURRYDEP</h2>
-          
-          <div className="game-instructions">
-            <p>Use the arrow keys to move around.</p>
-            <p>Cross as many roads as possible</p>
+          <div className="title-section">
+            <h1 className="game-title">CROSS NAD ROAD</h1>
+            <h2 className="game-subtitle">BY XURRYDEP</h2>
+            <img 
+              src="/assets/images/character-icon.svg" 
+              alt="Character Icon" 
+              className="character-icon"
+            />
           </div>
           
-          <button className="auth-button" onClick={login}>
-            Sign in with Monad Games ID
-          </button>
+          <div className="instructions-section">
+            <div className="game-instructions">
+              <p>Use the arrow keys to move around.</p>
+              <p>Cross as many roads as possible.</p>
+              <p>because Monad has 10,000 TPS.</p>
+            </div>
+            
+            <div className="login-section">
+              <button className="auth-button" onClick={login}>
+                Sign in with Monad Games ID
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
