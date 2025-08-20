@@ -73,10 +73,12 @@ const Game = () => {
   const loadGameScript = () => {
     // Import the game logic from Game.js
     import('./Game.js').then(() => {
-      // Initialize the game after script loads
-      if (window.firstRun) {
-        window.firstRun();
-      }
+      // Initialize the game after script loads with a small delay to ensure DOM is ready
+      setTimeout(() => {
+        if (window.firstRun) {
+          window.firstRun();
+        }
+      }, 100);
     }).catch(error => {
       console.error('Error loading game script:', error);
     });
