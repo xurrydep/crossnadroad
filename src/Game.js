@@ -1451,9 +1451,8 @@ const submitScore = async (score) => {
 
         console.log('Submitting score:', { score, walletAddress, playerName });
 
-        // Mock score submission (removed external API to fix CORS)
-        console.log('Score submitted to leaderboard successfully (mock):', {
-            gameId: 57,
+        // Score submission is handled by Game.jsx component
+        console.log('Score ready for submission:', {
             walletAddress: walletAddress,
             score: score,
             playerName: playerName
@@ -1463,7 +1462,7 @@ const submitScore = async (score) => {
         if (window.refreshLeaderboard) {
             setTimeout(() => {
                 window.refreshLeaderboard();
-            }, 1000); // Wait 1 second for API to update
+            }, 1000);
         }
 
     } catch (error) {

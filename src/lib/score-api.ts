@@ -37,11 +37,11 @@ interface PlayerDataPerGameResponse {
   error?: string;
 }
 
-// Get session token for authenticated requests (client-side mock)
+// Get session token for authenticated requests from Monad Games ID
 export async function getSessionToken(playerAddress: string, signMessage?: any): Promise<string | null> {
   try {
-    const message = `Authenticate for score submission: ${playerAddress}`;
-    let signedMessage = "dummy_signature";
+    const message = `Authenticate for Monad Games ID: ${playerAddress}`;
+    let signedMessage = "";
     
     // Try to sign message with Privy if available
     if (signMessage && typeof signMessage === 'function') {
@@ -50,22 +50,44 @@ export async function getSessionToken(playerAddress: string, signMessage?: any):
         console.log('Message signed successfully with wallet');
       } catch (signError) {
         console.warn('Failed to sign message with wallet:', signError);
-        // Continue with dummy signature for now
+        throw new Error('Wallet signature required for authentication');
       }
+    } else {
+      throw new Error('signMessage function not available');
     }
     
-    // Client-side mock session token (since we don't have a backend)
-    const sessionToken = 'mock_session_token_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-    console.log('Generated mock session token:', sessionToken);
+    // Get session token from Monad Games ID API
+    const response = await fetch('https://monad-games-id-site.vercel.app/api/get-session-token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        walletAddress: playerAddress,
+        message: message,
+        signature: signedMessage
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
     
-    return sessionToken;
+    if (data.success && data.sessionToken) {
+      console.log('Session token obtained successfully');
+      return data.sessionToken;
+    } else {
+      throw new Error(data.message || 'Failed to get session token');
+    }
   } catch (error) {
     console.error('Error getting session token:', error);
     return null;
   }
 }
 
-// Submit player score and transaction data (client-side mock)
+// Submit player score and transaction data to Monad Games ID
 export async function submitPlayerScore(
   playerAddress: string,
   scoreAmount: number,
@@ -87,28 +109,42 @@ export async function submitPlayerScore(
       validSessionToken = token;
     }
 
-    // Client-side mock score submission (since we don't have a backend)
-    console.log('Score submitted successfully (mock):', {
-      playerAddress,
-      scoreAmount,
-      transactionAmount,
-      sessionToken: validSessionToken,
-      timestamp: Date.now()
+    // Submit to Monad Games ID API
+    const response = await fetch('https://monad-games-id-site.vercel.app/api/submit-score', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        gameId: 57, // Your game ID
+        walletAddress: playerAddress,
+        score: scoreAmount,
+        transactions: transactionAmount,
+        sessionToken: validSessionToken
+      }),
     });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
     
-    // Simulate successful submission with mock transaction hash
-    const mockTransactionHash = 'mock_tx_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-    
-    return {
-      success: true,
-      transactionHash: mockTransactionHash,
-      message: 'Score submitted successfully (mock)'
-    };
+    if (data.success) {
+      console.log('Score submitted successfully to Monad Games ID:', data);
+      return {
+        success: true,
+        transactionHash: data.transactionHash,
+        message: 'Score submitted successfully'
+      };
+    } else {
+      throw new Error(data.message || 'Failed to submit score');
+    }
   } catch (error) {
     console.error('Error submitting score:', error);
     return {
       success: false,
-      error: 'Failed to submit score',
+      error: error instanceof Error ? error.message : 'Unknown error',
     };
   }
 }
