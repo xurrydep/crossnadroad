@@ -1,7 +1,8 @@
 "use strict";
 
-import * as THREE from 'three';
-import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+// Use THREE from global window object (loaded via script tags)
+const THREE = window.THREE;
+const BufferGeometryUtils = window.THREE.BufferGeometryUtils;
 
 let scene, camera, renderer, orbitControl, stats;
 let clock = new THREE.Clock(), deltaTime;
