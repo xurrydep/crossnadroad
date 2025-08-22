@@ -12,10 +12,16 @@
     "react-dom": "^19.1.1",
     "react-scripts": "5.0.1",
     "three": "^0.179.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "react-hot-toast": "^2.6.0",
+    "viem": "^2.33.3"
   },
   "devDependencies": {
-    "@types/three": "^0.179.0"
+    "@types/three": "^0.179.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "^5"
   },
   "scripts": {
     "start": "react-scripts start",

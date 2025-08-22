@@ -1,64 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { PrivyProvider, usePrivy, CrossAppAccountWithMetadata } from '@privy-io/react-auth';
+import { usePrivy } from '@privy-io/react-auth';
 import Game from './Game.jsx';
+import PrivyProvider from './components/PrivyProvider.tsx';
+import AuthComponent from './components/AuthComponent.tsx';
+import { useMonadGamesUser } from './hooks/useMonadGamesUser';
+import { SimpleScoreManager } from './lib/score-api';
 import './App.css';
 import './Game.css';
 
 function GameWithAuth() {
-  const { authenticated, user, ready, logout, login } = usePrivy();
+  const { authenticated, ready, logout, login } = usePrivy();
   const [accountAddress, setAccountAddress] = useState('');
-  const [username, setUsername] = useState('');
-  const [hasUsername, setHasUsername] = useState(false);
-  const [message, setMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
+  const [scoreManager, setScoreManager] = useState(null);
+  const { user: monadUser, hasUsername, isLoading } = useMonadGamesUser(accountAddress);
 
   useEffect(() => {
-    // Check if privy is ready and user is authenticated
-    if (authenticated && user && ready) {
-      // Check if user has linkedAccounts
-      if (user.linkedAccounts.length > 0) {
-        // Get the cross app account created using Monad Games ID
-        const crossAppAccount = user.linkedAccounts.filter(
-          account => account.type === "cross_app" && account.providerApp.id === "cmd8euall0037le0my79qpz42"
-        )[0];
-
-        // The first embedded wallet created using Monad Games ID, is the wallet address
-        if (crossAppAccount && crossAppAccount.embeddedWallets.length > 0) {
-          const walletAddress = crossAppAccount.embeddedWallets[0].address;
-          setAccountAddress(walletAddress);
-          
-          // Make wallet address available globally for Game.js
-          window.getWalletAddress = () => walletAddress;
-          
-          // Check username
-          checkUsername(walletAddress);
-        }
-      } else {
-        setMessage("You need to link your Monad Games ID account to continue.");
-      }
-    }
-  }, [authenticated, user, ready]);
-
-  const checkUsername = async (walletAddress) => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(`https://monad-games-id-site.vercel.app/api/check-wallet?wallet=${walletAddress}`);
-      const data = await response.json();
+    if (accountAddress) {
+      // Make wallet address available globally for Game.js
+      window.getWalletAddress = () => accountAddress;
       
-      if (data.hasUsername) {
-        setHasUsername(true);
-        setUsername(data.user.username);
-        setMessage(`Welcome back, ${data.user.username}!`);
-      } else {
-        setHasUsername(false);
-        setMessage("You haven't reserved a username yet.");
-      }
-    } catch (error) {
-      console.error('Error checking username:', error);
-      setMessage('Error checking username. Please try again.');
+      // Initialize score manager
+      const manager = new SimpleScoreManager(accountAddress);
+      setScoreManager(manager);
+      window.scoreManager = manager;
+      
+      return () => {
+        // Cleanup
+        if (window.scoreManager) {
+          delete window.scoreManager;
+        }
+      };
     }
-    setIsLoading(false);
+  }, [accountAddress]);
+
+  const handleAddressChange = (address) => {
+    setAccountAddress(address);
   };
 
   if (!ready) {
@@ -101,12 +77,11 @@ function GameWithAuth() {
     );
   }
 
-  if (!hasUsername && accountAddress) {
+  if (!hasUsername && accountAddress && !isLoading) {
     return (
       <div className="username-screen">
         <div className="username-container">
           <h1>Username Required</h1>
-          <p>{message}</p>
           <p>Please register a username to continue playing.</p>
           <a 
             href="https://monad-games-id-site.vercel.app/" 
@@ -116,13 +91,6 @@ function GameWithAuth() {
           >
             Register Username
           </a>
-          <button 
-            className="refresh-button"
-            onClick={() => checkUsername(accountAddress)}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Checking...' : 'Refresh'}
-          </button>
           <button 
             className="logout-button"
             onClick={logout}
@@ -136,6 +104,9 @@ function GameWithAuth() {
 
   return (
     <div className="game-container">
+      <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000 }}>
+        <AuthComponent onAddressChange={handleAddressChange} />
+      </div>
       <Game />
     </div>
   );
@@ -143,18 +114,7 @@ function GameWithAuth() {
 
 function App() {
   return (
-    <PrivyProvider
-      appId={process.env.REACT_APP_PRIVY_APP_ID || ""}
-      config={{
-        loginMethodsAndOrder: {
-          primary: ['privy:cmd8euall0037le0my79qpz42'],
-        },
-        appearance: {
-          theme: 'dark',
-          accentColor: '#8a2be2',
-        },
-      }}
-    >
+    <PrivyProvider>
       <GameWithAuth />
     </PrivyProvider>
   );
