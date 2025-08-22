@@ -64,6 +64,9 @@ window.init = () =>{
     const restartEl = document.getElementById("restart");
     if (restartEl) restartEl.style.visibility = "hidden";
     
+    const saveScoreEl = document.getElementById("saveScore");
+    if (saveScoreEl) saveScoreEl.style.visibility = "hidden";
+    
     const splashEl = document.getElementById('splash');
     if (splashEl && splashEl.parentNode) {
         splashEl.parentNode.removeChild(splashEl);
@@ -1216,6 +1219,8 @@ const update = () =>{
             setTimeout(() => {
                 const restartEl = document.getElementById("restart");
             if (restartEl) restartEl.style.visibility = "visible";
+                const saveScoreEl = document.getElementById("saveScore");
+            if (saveScoreEl) saveScoreEl.style.visibility = "visible";
                 // if (confirm("Game Over.\nRestart?"))
                 //     init();
             }, 2000);
@@ -1247,6 +1252,8 @@ const update = () =>{
                             setTimeout(() => {
                                 const restartEl = document.getElementById("restart");
                                  if (restartEl) restartEl.style.visibility = "visible";
+                                const saveScoreEl = document.getElementById("saveScore");
+                                 if (saveScoreEl) saveScoreEl.style.visibility = "visible";
                                 // if (confirm("Game Over.\nRestart?"))
                                 //     init();
                             }, 3000);
@@ -1289,6 +1296,8 @@ const update = () =>{
                         setTimeout(() => {
                             const restartEl = document.getElementById("restart");
                             if (restartEl) restartEl.style.visibility = "visible";
+                            const saveScoreEl = document.getElementById("saveScore");
+                            if (saveScoreEl) saveScoreEl.style.visibility = "visible";
                             // if (confirm("Game Over.\nRestart?"))
                             //     init();
                         }, 2000);
@@ -1318,6 +1327,8 @@ const update = () =>{
                         setTimeout(() => {
                             const restartEl = document.getElementById("restart");
                             if (restartEl) restartEl.style.visibility = "visible";
+                            const saveScoreEl = document.getElementById("saveScore");
+                            if (saveScoreEl) saveScoreEl.style.visibility = "visible";
                             // if (confirm("Game Over.\nRestart?"))
                             //     init();
                         }, 5000);

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { usePrivy } from '@privy-io/react-auth';
 import * as THREE from 'three';
+import { submitPlayerScore } from './lib/score-api';
 import './Game.css';
 
 const Game = () => {
@@ -72,6 +73,40 @@ const Game = () => {
       fetchLeaderboard();
     }
     setShowLeaderboard(!showLeaderboard);
+  };
+
+  // Save current score to leaderboard
+  const saveCurrentScore = async () => {
+    try {
+      const walletAddress = getWalletAddress();
+      if (!walletAddress) {
+        alert('Wallet address not found!');
+        return;
+      }
+
+      // Get current score from the game
+      const currentScore = window.score || 0;
+      if (currentScore === 0) {
+        alert('No score to save!');
+        return;
+      }
+
+      // Submit score to blockchain
+      const result = await submitPlayerScore(walletAddress, currentScore, 1);
+      
+      if (result.success) {
+        alert(`Score saved successfully! Score: ${currentScore}`);
+        // Refresh leaderboard if it's open
+        if (showLeaderboard) {
+          fetchLeaderboard();
+        }
+      } else {
+        alert(`Failed to save score: ${result.error || 'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error('Error saving score:', error);
+      alert('Error saving score. Please try again.');
+    }
   };
 
   useEffect(() => {
@@ -156,6 +191,13 @@ const Game = () => {
     restartButton.textContent = 'Play Again';
     restartButton.onclick = () => window.init && window.init();
     container.appendChild(restartButton);
+
+    // Create save score button
+    const saveScoreButton = document.createElement('button');
+    saveScoreButton.id = 'saveScore';
+    saveScoreButton.textContent = 'Save Score';
+    saveScoreButton.onclick = () => saveCurrentScore();
+    container.appendChild(saveScoreButton);
 
     // Load and execute the game script
     loadGameScript();

@@ -1,7 +1,7 @@
 // Game configuration
 export const GAME_CONFIG = {
   // Your registered game address
-  GAME_ADDRESS: '0xf5ea577f39318dc012d5Cbbf2d447FdD76c48523',
+  GAME_ADDRESS: '0xceCBFF203C8B6044F52CE23D914A1bfD997541A4',
   
   // Game settings
   SCORE_SUBMISSION: {

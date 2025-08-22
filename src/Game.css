@@ -113,7 +113,7 @@ canvas{
 #restart {
 	position: absolute;
 	top: 50vh;
-	left: 50vw;
+	left: calc(50vw - 120px);
 	background-color: red;
 	color: white;
 	padding: 15px 30px 15px 30px;
@@ -122,6 +122,25 @@ canvas{
 	border-style: none;
 	transform: translate(-50%, -50%);
 	visibility: hidden;
+}
+
+#saveScore {
+	position: absolute;
+	top: 50vh;
+	left: calc(50vw + 120px);
+	background-color: #4CAF50;
+	color: white;
+	padding: 15px 30px 15px 30px;
+	font-family: Boxy;
+	font-size: 20px;
+	border-style: none;
+	transform: translate(-50%, -50%);
+	visibility: hidden;
+	cursor: pointer;
+}
+
+#saveScore:hover {
+	background-color: #45a049;
 }
 @keyframes first{
 	0% { opacity: 0; }
