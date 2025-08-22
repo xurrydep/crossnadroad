@@ -38,11 +38,20 @@ interface PlayerDataPerGameResponse {
 }
 
 // Get session token for authenticated requests
-export async function getSessionToken(playerAddress: string): Promise<string | null> {
+export async function getSessionToken(playerAddress: string, signMessage?: any): Promise<string | null> {
   try {
-    // In a real implementation, you would sign a message with the user's wallet here
     const message = `Authenticate for score submission: ${playerAddress}`;
-    const signedMessage = "dummy_signature"; // This should be replaced with actual wallet signing
+    let signedMessage = "dummy_signature";
+    
+    // Try to sign message with Privy if available
+    if (signMessage && typeof signMessage === 'function') {
+      try {
+        signedMessage = await signMessage(message);
+      } catch (signError) {
+        console.warn('Failed to sign message with wallet:', signError);
+        // Continue with dummy signature for now
+      }
+    }
     
     const response = await fetch('/api/get-session-token', {
       method: 'POST',
@@ -73,13 +82,14 @@ export async function submitPlayerScore(
   playerAddress: string,
   scoreAmount: number,
   transactionAmount: number = 1,
-  sessionToken?: string
+  sessionToken?: string,
+  signMessage?: any
 ): Promise<ScoreSubmissionResponse> {
   try {
     // Get session token if not provided
     let validSessionToken: string = sessionToken || '';
     if (!validSessionToken) {
-      const token = await getSessionToken(playerAddress);
+      const token = await getSessionToken(playerAddress, signMessage);
       if (!token) {
         return {
           success: false,
@@ -253,7 +263,7 @@ export class SimpleScoreManager {
   }
 
   // Submit current totals (for manual submission)
-  async submitTotals(): Promise<ScoreSubmissionResponse> {
+  async submitTotals(signMessage?: any): Promise<ScoreSubmissionResponse> {
     if (this.totalScore === 0 && this.totalTransactions === 0) {
       return { success: true, message: 'No data to submit' };
     }
@@ -261,7 +271,9 @@ export class SimpleScoreManager {
     const result = await submitPlayerScore(
       this.playerAddress,
       this.totalScore,
-      this.totalTransactions
+      this.totalTransactions,
+      undefined,
+      signMessage
     );
 
     if (result.success) {

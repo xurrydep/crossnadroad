@@ -7,7 +7,7 @@ import './Game.css';
 const Game = () => {
   const gameContainerRef = useRef(null);
   const gameInstanceRef = useRef(null);
-  const { user, logout } = usePrivy();
+  const { user, logout, signMessage } = usePrivy();
   const [leaderboard, setLeaderboard] = useState([]);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   
@@ -92,7 +92,7 @@ const Game = () => {
       }
 
       // Submit score to blockchain
-      const result = await submitPlayerScore(walletAddress, currentScore, 1);
+      const result = await submitPlayerScore(walletAddress, currentScore, 1, undefined, signMessage);
       
       if (result.success) {
         alert(`Score saved successfully! Score: ${currentScore}`);
