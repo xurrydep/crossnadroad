@@ -65,7 +65,7 @@ export async function getSessionToken(playerAddress: string, signMessage?: any):
   }
 }
 
-// Submit player score and transaction data to the contract
+// Submit player score and transaction data (client-side mock)
 export async function submitPlayerScore(
   playerAddress: string,
   scoreAmount: number,
@@ -87,21 +87,23 @@ export async function submitPlayerScore(
       validSessionToken = token;
     }
 
-    const response = await fetch('/api/update-player-data', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        playerAddress,
-        scoreAmount,
-        transactionAmount,
-        sessionToken: validSessionToken,
-      }),
+    // Client-side mock score submission (since we don't have a backend)
+    console.log('Score submitted successfully (mock):', {
+      playerAddress,
+      scoreAmount,
+      transactionAmount,
+      sessionToken: validSessionToken,
+      timestamp: Date.now()
     });
-
-    const data = await response.json();
-    return data;
+    
+    // Simulate successful submission with mock transaction hash
+    const mockTransactionHash = 'mock_tx_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    return {
+      success: true,
+      transactionHash: mockTransactionHash,
+      message: 'Score submitted successfully (mock)'
+    };
   } catch (error) {
     console.error('Error submitting score:', error);
     return {
