@@ -7,7 +7,7 @@ import './Game.css';
 const Game = () => {
   const gameContainerRef = useRef(null);
   const gameInstanceRef = useRef(null);
-  const { user, logout } = usePrivy();
+  const { user, logout, signMessage } = usePrivy();
   const [leaderboard, setLeaderboard] = useState([]);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   
@@ -91,20 +91,8 @@ const Game = () => {
         return;
       }
 
-      // Get embedded wallet for signing
-      let embeddedWalletSignMessage = null;
-      if (user && user.linkedAccounts.length > 0) {
-        const crossAppAccount = user.linkedAccounts.filter(
-          account => account.type === "cross_app" && account.providerApp.id === "cmd8euall0037le0my79qpz42"
-        )[0];
-        if (crossAppAccount && crossAppAccount.embeddedWallets.length > 0) {
-          const embeddedWallet = crossAppAccount.embeddedWallets[0];
-          embeddedWalletSignMessage = embeddedWallet.signMessage;
-        }
-      }
-
-      // Submit score to blockchain
-      const result = await submitPlayerScore(walletAddress, currentScore, 1, undefined, embeddedWalletSignMessage);
+      // Submit score to blockchain using Privy signMessage
+      const result = await submitPlayerScore(walletAddress, currentScore, 1, undefined, signMessage);
       
       if (result.success) {
         alert(`Score saved successfully! Score: ${currentScore}`);

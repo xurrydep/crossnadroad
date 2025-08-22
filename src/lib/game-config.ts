@@ -14,7 +14,7 @@ export const GAME_CONFIG = {
   
   // Game metadata
   METADATA: {
-    name: 'Crossy Road Game',
+    name: 'Cross Nad Road',
     url: 'https://crossnadroad.vercel.app/',
     image: 'https://picsum.photos/536/354'
   }
