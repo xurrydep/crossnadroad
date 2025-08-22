@@ -180,7 +180,7 @@ const Game = () => {
       <div id="instructions">Use the arrow keys to move<br> around</div>
       <div id="play">
         PLAY
-        <button id="pressPlay" disabled onclick="init()"></button>
+        <button id="pressPlay" disabled onclick="window.init && window.init()"></button>
       </div>
     `;
     container.appendChild(splashDiv);
