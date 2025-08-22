@@ -128,13 +128,15 @@ const Game = () => {
       if (walletAddress) {
         checkMonadUsername(walletAddress);
       }
-      // Initialize the game when component mounts
-      if (gameContainerRef.current && !gameInstanceRef.current) {
-        initializeGame();
-      }
+    }
+  }, [user]);
+
+  // Initialize game when component mounts
+  useEffect(() => {
+    if (gameContainerRef.current && !gameInstanceRef.current) {
+      initializeGame();
     }
 
-    // Cleanup when component unmounts
     return () => {
       if (gameInstanceRef.current) {
         // Clean up Three.js resources
@@ -144,20 +146,7 @@ const Game = () => {
         if (window.renderer) {
           window.renderer.dispose();
         }
-        gameInstanceRef.current = null;
-      }
-    };
-  }, [user]);
-
-  // Initialize game when component mounts
-  useEffect(() => {
-    if (gameContainerRef.current && !gameInstanceRef.current) {
-      // Game will be initialized when user is available
-    }
-
-    return () => {
-      if (gameInstanceRef.current) {
-        // Cleanup if needed
+        // Cleanup game container
         const gameContainer = gameContainerRef.current;
         if (gameContainer) {
           gameContainer.innerHTML = '';

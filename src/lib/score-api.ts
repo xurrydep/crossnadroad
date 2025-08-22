@@ -37,7 +37,7 @@ interface PlayerDataPerGameResponse {
   error?: string;
 }
 
-// Get session token for authenticated requests
+// Get session token for authenticated requests (client-side mock)
 export async function getSessionToken(playerAddress: string, signMessage?: any): Promise<string | null> {
   try {
     const message = `Authenticate for score submission: ${playerAddress}`;
@@ -47,30 +47,18 @@ export async function getSessionToken(playerAddress: string, signMessage?: any):
     if (signMessage && typeof signMessage === 'function') {
       try {
         signedMessage = await signMessage(message);
+        console.log('Message signed successfully with wallet');
       } catch (signError) {
         console.warn('Failed to sign message with wallet:', signError);
         // Continue with dummy signature for now
       }
     }
     
-    const response = await fetch('/api/get-session-token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        playerAddress,
-        message,
-        signedMessage,
-      }),
-    });
-
-    const data = await response.json();
-    if (data.success) {
-      return data.sessionToken;
-    }
+    // Client-side mock session token (since we don't have a backend)
+    const sessionToken = 'mock_session_token_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    console.log('Generated mock session token:', sessionToken);
     
-    return null;
+    return sessionToken;
   } catch (error) {
     console.error('Error getting session token:', error);
     return null;

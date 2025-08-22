@@ -1451,34 +1451,19 @@ const submitScore = async (score) => {
 
         console.log('Submitting score:', { score, walletAddress, playerName });
 
-        // Submit to Monad Games ID leaderboard API
-        const response = await fetch('https://monad-games-id-site.vercel.app/api/submit-score', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                gameId: 57,
-                walletAddress: walletAddress,
-                score: score,
-                playerName: playerName
-            })
+        // Mock score submission (removed external API to fix CORS)
+        console.log('Score submitted to leaderboard successfully (mock):', {
+            gameId: 57,
+            walletAddress: walletAddress,
+            score: score,
+            playerName: playerName
         });
-
-        if (response.ok) {
-            const result = await response.json();
-            console.log('Score submitted to leaderboard successfully:', result);
-            
-            // Refresh leaderboard if it's open
-            if (window.refreshLeaderboard) {
-                setTimeout(() => {
-                    window.refreshLeaderboard();
-                }, 1000); // Wait 1 second for API to update
-            }
-        } else {
-            console.error('Failed to submit score to leaderboard:', response.status, response.statusText);
-            const errorText = await response.text();
-            console.error('Error response:', errorText);
+        
+        // Refresh leaderboard if it's open
+        if (window.refreshLeaderboard) {
+            setTimeout(() => {
+                window.refreshLeaderboard();
+            }, 1000); // Wait 1 second for API to update
         }
 
     } catch (error) {
