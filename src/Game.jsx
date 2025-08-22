@@ -43,12 +43,26 @@ const Game = () => {
 
   
   const getWalletAddress = () => {
-    if (user && user.linkedAccounts.length > 0) {
-      const crossAppAccount = user.linkedAccounts.filter(
-        account => account.type === "cross_app" && account.providerApp.id === "cmd8euall0037le0my79qpz42"
-      )[0];
-      if (crossAppAccount && crossAppAccount.embeddedWallets.length > 0) {
-        return crossAppAccount.embeddedWallets[0].address;
+    if (user) {
+      // Try to get wallet address from different sources
+      if (user.wallet && user.wallet.address) {
+        return user.wallet.address;
+      }
+      
+      if (user.linkedAccounts && user.linkedAccounts.length > 0) {
+        // Try embedded wallets first
+        for (const account of user.linkedAccounts) {
+          if (account.embeddedWallets && account.embeddedWallets.length > 0) {
+            return account.embeddedWallets[0].address;
+          }
+        }
+        
+        // Try external wallets
+        for (const account of user.linkedAccounts) {
+          if (account.type === 'wallet' && account.address) {
+            return account.address;
+          }
+        }
       }
     }
     return null;

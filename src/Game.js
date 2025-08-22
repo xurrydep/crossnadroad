@@ -1120,19 +1120,19 @@ class Sound{
             // this.themeSong.play(); // Müzik kaldırıldı
         });
         this.death = new THREE.Audio(listener);
-        audioLoader.load( 'assets/audio/death.wav', buffer =>{
+        audioLoader.load( '/assets/audio/death.wav', buffer =>{
             this.death.setBuffer( buffer );
             this.death.setLoop( false );
             this.death.setVolume( 0.5 );
         });
         this.death2 = new THREE.Audio(listener);
-        audioLoader.load( 'assets/audio/death2.wav', buffer =>{
+        audioLoader.load( '/assets/audio/death2.wav', buffer =>{
             this.death2.setBuffer( buffer );
             this.death2.setLoop( false );
             this.death2.setVolume( 0.5 );
         });
         this.hit = new THREE.Audio(listener);
-        audioLoader.load( 'assets/audio/hit.mp3', buffer =>{
+        audioLoader.load( '/assets/audio/hit.mp3', buffer =>{
             this.hit.setBuffer( buffer );
             this.hit.setLoop( false );
             this.hit.setVolume( 0.5 );
@@ -1142,7 +1142,7 @@ class Sound{
             };
         });
         this.shred = new THREE.Audio(listener);
-        audioLoader.load( 'assets/audio/shred.mp3', buffer =>{
+        audioLoader.load( '/assets/audio/shred.mp3', buffer =>{
             this.shred.setBuffer( buffer );
             this.shred.setLoop( false );
             this.shred.setVolume( 0.25 );
@@ -1152,7 +1152,7 @@ class Sound{
             // };
         });
         this.splash = new THREE.Audio(listener);
-        audioLoader.load( 'assets/audio/splash.mp3', buffer =>{
+        audioLoader.load( '/assets/audio/splash.mp3', buffer =>{
             this.splash.setBuffer( buffer );
             this.splash.setLoop( false );
             this.splash.setVolume( 0.5 );
